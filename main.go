@@ -44,7 +44,7 @@ func main() {
 
 	log.Println("Pre-signed URL:", url)
 	downloadFile(url)
-	log.Println("Fail is downloaded!")
+	log.Println("File is downloaded!")
 }
 
 func downloadFile(url string) {
