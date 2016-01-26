@@ -19,16 +19,18 @@ var (
 	bucket   = flag.String("bucket", "", "Name of bucket in S3")
 	key      = flag.String("key", "", "Key for object in bucket")
 	path     = flag.String("path", "", "Path for download")
-	commands = []string{"presigned"}
+	url      = flag.String("url", "", "Pre-signed URL for downloading")
+	commands = []string{"presigned", "download"}
 )
 
 func main() {
-	flag.Parse()
 	comm, err := getCommand()
 	if err != nil {
 		log.Fatal("Incorrect command or command wasn't specified")
 	}
 	log.Println("Command:", comm)
+
+	flag.CommandLine.Parse(os.Args[2:])
 	if *bucket == "" || *key == "" {
 		fmt.Println("Please, specify valid parameters for command!")
 		os.Exit(1)
@@ -38,16 +40,22 @@ func main() {
 
 	switch comm {
 	case "presigned":
-		url, err := command.GetPresignedURL(session, *bucket, *key)
+		link, err := command.GetPresignedURL(session, *bucket, *key)
 		if err != nil {
 			log.Fatal("Can't generate pre-signed S3 URL because of:", err)
 		}
-		log.Println("Pre-signed URL:", url)
+		log.Println("Pre-signed URL:", link)
+	case "download":
+		log.Println("Start downloading file...")
 		dest := *key
 		if *path != "" {
 			dest = *path + "/" + *key
 		}
-		command.DownloadFile(url, dest)
+		if *url != "" {
+			command.DownloadFile(*url, dest)
+			return
+		}
+		command.Download(session, *bucket, *key, dest)
 		fmt.Println("File is downloaded!")
 	}
 }
