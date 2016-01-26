@@ -53,6 +53,7 @@ func main() {
 		}
 		if *url != "" {
 			command.DownloadFile(*url, dest)
+			fmt.Println("File is downloaded!")
 			return
 		}
 		command.Download(session, *bucket, *key, dest)
