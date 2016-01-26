@@ -1,7 +1,7 @@
 # s3-tool
 CLI tool for AWS S3, written in Go
 
-##### Dependency
+##### Dependencies
 
 Only depends on AWS SDK. Install it via    
 ```
@@ -15,7 +15,7 @@ Currently assumes that you will have credentials settled as environmental variab
 export AWS_ACCESS_KEY_ID=<key>
 export AWS_SECRET_ACCESS_KEY=<secret>
 ```
-##### Running
+##### Install
 Get it via    
 ``` 
 go get github.com/artemnikitin/s3-tool 
