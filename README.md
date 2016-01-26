@@ -40,17 +40,19 @@ s3tool presigned -bucket=mybucket -key=my-file.png
 - ```download``` download file from S3.   
 Requires parameters:
     - ```bucket``` specified bucket in S3
-    - ```key``` specified key in S3      
+    - ```key``` specified key in S3  
+    - ```url``` if specified, then ```s3-tool``` will try to download file be pre-signed URL ignoring other parameters   
 Example:   
 ```
-s3tool download -bucket=mybucket -key=my-file.png
+s3-tool download -bucket=mybucket -key=my-file.png    
+s3-tool download -url=https://
 ```
 
 ##### Optional parameters
 - ```region``` set S3 region, by default region will be set to ```us-east-1```       
 Example:    
 ``` 
-s3-uploader -path=/path/to/file -bucket=bucket_name -region=region-name 
+s3-tool -bucket=bucket-name -key=my-key -region=region-name 
 ```    
 
 ##### Run
