@@ -7,15 +7,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/artemnikitin/aws-config"
 	"github.com/artemnikitin/s3-tool/command"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 )
 
 var (
-	logging  = flag.Bool("log", false, "Enable logging")
-	region   = flag.String("region", "us-east-1", "Set S3 region")
 	bucket   = flag.String("bucket", "", "Name of bucket in S3")
 	key      = flag.String("key", "", "Key for object in bucket")
 	path     = flag.String("path", "", "Path for download")
@@ -36,7 +33,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	session := session.New(createConfig())
+	session := session.New(awsconfig.New())
 
 	switch comm {
 	case "presigned":
@@ -86,14 +83,4 @@ func validateCommand(command string) bool {
 		}
 	}
 	return valid
-}
-
-func createConfig() *aws.Config {
-	config := aws.NewConfig()
-	config.WithCredentials(credentials.NewEnvCredentials())
-	config.WithRegion(*region)
-	if *logging {
-		config.WithLogLevel(aws.LogDebugWithHTTPBody)
-	}
-	return config
 }
