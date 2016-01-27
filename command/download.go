@@ -27,9 +27,6 @@ func DownloadFile(url, path string) {
 	if err != nil {
 		log.Fatal("Failed to create a file from a body of HTTP request because of: ", err)
 	}
-	if err != nil {
-		log.Fatal("Failed to create a file from a body of HTTP request because of: ", err)
-	}
 }
 
 // Download using to download file from S3 by bucket and key
