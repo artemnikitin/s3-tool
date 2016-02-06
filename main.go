@@ -17,6 +17,9 @@ var (
 	key      = flag.String("key", "", "Key for object in bucket")
 	path     = flag.String("path", "", "Path for download")
 	url      = flag.String("url", "", "Pre-signed URL for downloading")
+	filespath  = flag.String("path", "", "Path to file")
+	rename     = flag.String("rename", "", "Set a new name for file")
+	uploadpath = flag.String("uploadto", "", "Set a specific path for a file inside S3 bucket")
 	commands = []string{"presigned", "download"}
 )
 
@@ -50,10 +53,9 @@ func main() {
 		}
 		if *url != "" {
 			command.DownloadFile(*url, dest)
-			fmt.Println("File is downloaded!")
-			return
+		} else {
+			command.Download(session, *bucket, *key, dest)
 		}
-		command.Download(session, *bucket, *key, dest)
 		fmt.Println("File is downloaded!")
 	}
 }
