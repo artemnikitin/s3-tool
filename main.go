@@ -13,14 +13,14 @@ import (
 )
 
 var (
-	bucket   = flag.String("bucket", "", "Name of bucket in S3")
-	key      = flag.String("key", "", "Key for object in bucket")
-	path     = flag.String("path", "", "Path for download")
-	url      = flag.String("url", "", "Pre-signed URL for downloading")
+	bucket     = flag.String("bucket", "", "Name of bucket in S3")
+	key        = flag.String("key", "", "Key for object in bucket")
+	path       = flag.String("path", "", "Path for download")
+	url        = flag.String("url", "", "Pre-signed URL for downloading")
 	filespath  = flag.String("path", "", "Path to file")
 	rename     = flag.String("rename", "", "Set a new name for file")
 	uploadpath = flag.String("uploadto", "", "Set a specific path for a file inside S3 bucket")
-	commands = []string{"presigned", "download"}
+	commands   = []string{"presigned", "download"}
 )
 
 func main() {
