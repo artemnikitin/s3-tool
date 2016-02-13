@@ -1,13 +1,6 @@
 # s3-tool
+[![Go Report Card](https://goreportcard.com/badge/github.com/artemnikitin/s3-tool)](https://goreportcard.com/report/github.com/artemnikitin/s3-tool)    
 CLI tool for AWS S3, written in Go. Work in progress...
-
-##### Dependency
-
-Install it via    
-```
-go get github.com/aws/aws-sdk-go/...        
-go get github.com/artemnikitin/aws-config
-```
 
 ##### AWS Credentials
 
