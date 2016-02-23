@@ -1,9 +1,9 @@
 package command
 
 import (
-	"log"
 	"time"
 
+	"github.com/artemnikitin/s3-tool/logger"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -17,8 +17,6 @@ func GetPresignedURL(session *session.Session, bucket, key string) (string, erro
 		Key:    aws.String(key),
 	})
 	url, err := request.Presign(10 * time.Minute)
-	if err != nil {
-		log.Fatal("Failed to create pre-signed URL because of: ", err)
-	}
+	logger.Process(err, "Failed to create pre-signed URL")
 	return url, err
 }

@@ -9,25 +9,24 @@ import (
 
 	"github.com/artemnikitin/aws-config"
 	"github.com/artemnikitin/s3-tool/command"
+	"github.com/artemnikitin/s3-tool/logger"
 	"github.com/aws/aws-sdk-go/aws/session"
 )
 
 var (
 	bucket     = flag.String("bucket", "", "Name of bucket in S3")
 	key        = flag.String("key", "", "Key for object in bucket")
-	path       = flag.String("path", "", "Path for download")
+	downloadTo = flag.String("download", "", "Path for download")
 	url        = flag.String("url", "", "Pre-signed URL for downloading")
-	filespath  = flag.String("path", "", "Path to file")
+	pathToFile = flag.String("path", "", "Path to file")
 	rename     = flag.String("rename", "", "Set a new name for file")
-	uploadpath = flag.String("uploadto", "", "Set a specific path for a file inside S3 bucket")
+	uploadTo   = flag.String("upload", "", "Set a specific path for a file inside S3 bucket")
 	commands   = []string{"presigned", "download"}
 )
 
 func main() {
 	comm, err := getCommand()
-	if err != nil {
-		log.Fatal("Incorrect command or command wasn't specified")
-	}
+	logger.Process(err, "Incorrect command or command wasn't specified")
 	log.Println("Command:", comm)
 
 	flag.CommandLine.Parse(os.Args[2:])
@@ -41,15 +40,13 @@ func main() {
 	switch comm {
 	case "presigned":
 		link, err := command.GetPresignedURL(session, *bucket, *key)
-		if err != nil {
-			log.Fatal("Can't generate pre-signed S3 URL because of:", err)
-		}
+		logger.Process(err, "Can't generate pre-signed S3 URL")
 		log.Println("Pre-signed URL:", link)
 	case "download":
 		log.Println("Start downloading file...")
 		dest := *key
-		if *path != "" {
-			dest = *path + "/" + *key
+		if *downloadTo != "" {
+			dest = *downloadTo + "/" + *key
 		}
 		if *url != "" {
 			command.DownloadFile(*url, dest)
@@ -70,19 +67,17 @@ func getCommand() (string, error) {
 		}
 	}()
 	arg := os.Args[1]
-	if !validateCommand(arg) {
+	if !validCommand(arg) {
 		err = errors.New("Unexisted command")
 	}
 	return arg, err
 }
 
-func validateCommand(command string) bool {
-	valid := false
+func validCommand(command string) bool {
 	for _, comm := range commands {
 		if comm == command {
-			valid = true
-			break
+			return true
 		}
 	}
-	return valid
+	return false
 }

@@ -26,3 +26,6 @@ _testmain.go
 .idea
 *.idea
 *.iml
+
+/HERE-iOS-SDK-Premium-KPI.tar.gz
+/vendor
