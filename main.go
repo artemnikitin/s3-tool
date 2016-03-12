@@ -16,12 +16,9 @@ import (
 var (
 	bucket     = flag.String("bucket", "", "Name of bucket in S3")
 	key        = flag.String("key", "", "Key for object in bucket")
-	downloadTo = flag.String("download", "", "Path for download")
 	url        = flag.String("url", "", "Pre-signed URL for downloading")
 	pathToFile = flag.String("path", "", "Path to file")
-	rename     = flag.String("rename", "", "Set a new name for file")
-	uploadTo   = flag.String("upload", "", "Set a specific path for a file inside S3 bucket")
-	commands   = []string{"presigned", "download"}
+	commands   = []string{"presigned", "download", "upload"}
 )
 
 func main() {
@@ -45,8 +42,8 @@ func main() {
 	case "download":
 		log.Println("Start downloading file...")
 		dest := *key
-		if *downloadTo != "" {
-			dest = *downloadTo + "/" + *key
+		if *pathToFile != "" {
+			dest = *pathToFile + "/" + *key
 		}
 		if *url != "" {
 			command.DownloadFile(*url, dest)
@@ -54,6 +51,22 @@ func main() {
 			command.Download(session, *bucket, *key, dest)
 		}
 		fmt.Println("File is downloaded!")
+	case "upload":
+		if *pathToFile == "" {
+			fmt.Println("Can't proceed without path to file")
+			os.Exit(1)
+		}
+		file, err := os.Open(*pathToFile)
+		logger.Process(err, "Failed to open a file")
+		defer file.Close()
+		info, err := file.Stat()
+		logger.Process(err, "Failed to get info about file")
+		switch mode := info.Mode(); {
+		case mode.IsDir():
+			command.UploadDirectory(session, *bucket, *pathToFile)
+		case mode.IsRegular():
+			command.UploadFile(session, *bucket, *key, file)
+		}
 	}
 }
 
