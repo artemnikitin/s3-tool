@@ -16,7 +16,7 @@ import (
 func DownloadFile(url, path string) {
 	resp, err := http.DefaultClient.Get(url)
 	logger.Process(err, "Failed to download a file by pre-signed URL")
-	defer resp.Body.Close()
+	resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	logger.Process(err, "Failed to get a body from HTTP request")
 	err = ioutil.WriteFile(path, body, 0777)
@@ -27,7 +27,7 @@ func DownloadFile(url, path string) {
 func Download(session *session.Session, bucket, key, path string) {
 	file, err := os.Create(path)
 	logger.Process(err, "Can't create file")
-	defer file.Close()
+	file.Close()
 	client := s3manager.NewDownloader(session)
 	_, err = client.Download(file, &s3.GetObjectInput{
 		Bucket: aws.String(bucket),
