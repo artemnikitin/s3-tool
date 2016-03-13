@@ -27,7 +27,7 @@ upload
 - ```presigned``` generate pre-signed URL for downloading file from S3.   
 Requires parameters:
     - ```bucket``` specified bucket in S3
-    - ```key``` specified key in S3      
+    - ```key``` specified key in S3           
 Example:   
 ```
 s3tool presigned -bucket=mybucket -key=my-file.png
@@ -38,7 +38,7 @@ Required parameters:
     - ```bucket``` specified bucket in S3
     - ```key``` specified key in S3  
     - ```url``` if specified, then ```s3-tool``` will try to download file be pre-signed URL ignoring other parameters
-    - ```path``` (optional) if specified, then file will be download to specified folder
+    - ```path``` (optional) if specified, then file will be download to specified folder    
 Example:   
 ```
 s3-tool download -bucket=mybucket -key=my-file.png    
@@ -49,7 +49,7 @@ s3-tool download -url=https://
 Required parameters:
     - ```bucket``` specified bucket in S3
     - ```key``` specified key in S3  
-    - ```path``` specified path to file/folder
+    - ```path``` specified path to file/folder    
 Example:   
 ```
 s3-tool upload -bucket=mybucket -key=my-file.png -path=/path/to/my-file.png
