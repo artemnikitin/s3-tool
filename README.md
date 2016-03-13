@@ -21,6 +21,7 @@ Current list of supported commands:
 ```
 presigned
 download
+upload
 ```
 
 - ```presigned``` generate pre-signed URL for downloading file from S3.   
@@ -33,16 +34,26 @@ s3tool presigned -bucket=mybucket -key=my-file.png
 ```
 
 - ```download``` download file from S3.   
-Requires parameters:
+Required parameters:
     - ```bucket``` specified bucket in S3
     - ```key``` specified key in S3  
-    - ```url``` if specified, then ```s3-tool``` will try to download file be pre-signed URL ignoring other parameters   
+    - ```url``` if specified, then ```s3-tool``` will try to download file be pre-signed URL ignoring other parameters
+    - ```path``` (optional) if specified, then file will be download to specified folder
 Example:   
 ```
 s3-tool download -bucket=mybucket -key=my-file.png    
 s3-tool download -url=https://
 ```
 
+- ```upload``` upload file(s) to S3
+Required pParameters:
+    - ```bucket``` specified bucket in S3
+    - ```key``` specified key in S3  
+    - ```path``` specified path to file/folder
+Example:   
+```
+s3-tool upload -bucket=mybucket -key=my-file.png -path=/path/to/my-file.png
+```
 ##### Optional parameters
 - ```region``` set S3 region, by default region will be set to ```us-east-1```       
 Example:    
@@ -59,6 +70,5 @@ s3-tool command -parameter=blabla ...
 You can specify parameter ```-log=true``` for logging AWS requests and responses.
 
 ##### TODO  
-1. Integrate s3-uploader as command(s)
-2. Add more commands
-3. Alternative ways to authenticate in AWS
+1. Add more commands
+2. Alternative ways to authenticate in AWS
