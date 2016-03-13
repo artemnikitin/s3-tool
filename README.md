@@ -45,8 +45,8 @@ s3-tool download -bucket=mybucket -key=my-file.png
 s3-tool download -url=https://
 ```
 
-- ```upload``` upload file(s) to S3
-Required pParameters:
+- ```upload``` upload file(s) to S3    
+Required parameters:
     - ```bucket``` specified bucket in S3
     - ```key``` specified key in S3  
     - ```path``` specified path to file/folder
