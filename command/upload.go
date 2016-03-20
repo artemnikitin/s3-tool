@@ -1,7 +1,6 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -28,16 +27,16 @@ func UploadFile(session *session.Session, bucket, key string, file io.Reader) {
 }
 
 // UploadDirectory will upload directory and all it's content while keeping it structure
-func UploadDirectory(session *session.Session, bucket, param string) {
+func UploadDirectory(session *session.Session, bucket, key, dir string) {
 	var wg sync.WaitGroup
-	err := filepath.Walk(param, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
 			file, err := os.Open(path)
 			if err == nil {
-				path := getPathInsideFolder(path, getFolderName(path))
-				wg.Add(1)
+				path := getPathInsideFolder(path, getFolderName(dir))
 				go func() {
-					UploadFile(session, bucket, createKey(param, path), file)
+					wg.Add(1)
+					UploadFile(session, bucket, key+path, file)
 					wg.Done()
 					file.Close()
 				}()
@@ -51,6 +50,9 @@ func UploadDirectory(session *session.Session, bucket, param string) {
 }
 
 func getPathInsideFolder(path, folder string) string {
+	if path == "" || folder == "" {
+		return ""
+	}
 	pos := strings.Index(path, folder)
 	var result string
 	if pos != -1 {
@@ -60,6 +62,9 @@ func getPathInsideFolder(path, folder string) string {
 }
 
 func getFolderName(filepath string) string {
+	if filepath == "" {
+		return ""
+	}
 	var result string
 	if endWith(filepath, "/") {
 		pos := strings.LastIndex(string(filepath[:len(filepath)-1]), "/")
@@ -85,25 +90,4 @@ func endWith(original, substring string) bool {
 	}
 	str := string(original[len(original)-len(substring):])
 	return str == substring
-}
-
-func createKey(param, path string) string {
-	var buffer bytes.Buffer
-	buffer.WriteString(param)
-	if param == "/" {
-		if startWith(path, "/") {
-			return path
-		}
-		buffer.WriteString(path)
-	} else {
-		if !endWith(param, "/") && !startWith(path, "/") {
-			buffer.WriteString("/")
-		}
-		if endWith(param, "/") && startWith(path, "/") {
-			buffer.WriteString(string(path[1:]))
-		} else {
-			buffer.WriteString(path)
-		}
-	}
-	return buffer.String()
 }

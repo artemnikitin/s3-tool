@@ -24,7 +24,7 @@ var (
 func main() {
 	comm, err := getCommand()
 	logger.Process(err, "Incorrect command or command wasn't specified")
-	log.Println("Command:", comm)
+	fmt.Println("Command:", comm)
 
 	flag.CommandLine.Parse(os.Args[2:])
 	if *bucket == "" || *key == "" {
@@ -63,7 +63,7 @@ func main() {
 		logger.Process(err, "Failed to get info about file")
 		switch mode := info.Mode(); {
 		case mode.IsDir():
-			command.UploadDirectory(session, *bucket, *pathToFile)
+			command.UploadDirectory(session, *bucket, *key, *pathToFile)
 		case mode.IsRegular():
 			command.UploadFile(session, *bucket, *key, file)
 		}
