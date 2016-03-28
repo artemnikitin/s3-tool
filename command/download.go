@@ -1,6 +1,7 @@
 package command
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -16,7 +17,11 @@ import (
 func DownloadFile(url, path string) {
 	resp, err := http.DefaultClient.Get(url)
 	logger.Process(err, "Failed to download a file by pre-signed URL")
-	defer resp.Body.Close()
+	defer func() {
+		// Drain and close the body to let the Transport reuse the connection
+		io.Copy(ioutil.Discard, resp.Body)
+		resp.Body.Close()
+	}()
 	body, err := ioutil.ReadAll(resp.Body)
 	logger.Process(err, "Failed to get a body from HTTP request")
 	err = ioutil.WriteFile(path, body, 0777)
