@@ -76,14 +76,6 @@ func getFolderName(filepath string) string {
 	return result
 }
 
-func startWith(original, substring string) bool {
-	if len(substring) > len(original) {
-		return false
-	}
-	str := string(original[0:len(substring)])
-	return str == substring
-}
-
 func endWith(original, substring string) bool {
 	if len(substring) > len(original) {
 		return false
