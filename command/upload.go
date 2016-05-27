@@ -14,28 +14,28 @@ import (
 )
 
 var contentTypes = map[string]string{
-	"txt": "text/plain",
+	"txt":  "text/plain",
 	"json": "application/json",
-	"xml": "application/xml",
-	"pdf": "application/pdf",
+	"xml":  "application/xml",
+	"pdf":  "application/pdf",
 	"html": "text/html",
-	"htm": "text/html",
-	"css": "text/css",
-	"js": "application/javascript",
-	"bmp": "image/bmp",
+	"htm":  "text/html",
+	"css":  "text/css",
+	"js":   "application/javascript",
+	"bmp":  "image/bmp",
 	"jpeg": "image/jpeg",
-	"png": "image/png",
+	"png":  "image/png",
 	"tiff": "image/tiff",
-	"gif": "image/gif",
+	"gif":  "image/gif",
 }
 
 // UploadFile will upload file to specific S3 bucket
 func UploadFile(session *session.Session, bucket, key string, file *os.File) {
 	service := s3manager.NewUploader(session)
 	resp, err := service.Upload(&s3manager.UploadInput{
-		Bucket: aws.String(bucket),
-		Key:    aws.String(key),
-		Body:   file,
+		Bucket:      aws.String(bucket),
+		Key:         aws.String(key),
+		Body:        file,
 		ContentType: aws.String(getContentType(file)),
 	})
 	logger.Process(err, "Can't upload file")

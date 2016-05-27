@@ -1,8 +1,8 @@
 package command
 
 import (
-	"testing"
 	"os"
+	"testing"
 )
 
 func TestGetFolderName(t *testing.T) {
@@ -38,7 +38,7 @@ func TestGetPathInsideFolder(t *testing.T) {
 
 func TestGetContentType(t *testing.T) {
 	cases := map[string]struct{ Path, Result string }{
-		"unknown type":       {"upload_test.go", "binary/octet-stream"},
+		"unknown type": {"upload_test.go", "binary/octet-stream"},
 	}
 
 	for k, v := range cases {
