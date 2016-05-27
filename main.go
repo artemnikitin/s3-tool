@@ -23,10 +23,10 @@ var (
 
 func main() {
 	comm, err := getCommand()
-	logger.Process(err, "Incorrect command or command wasn't specified")
+	logger.Process(err, "")
 	fmt.Println("Command:", comm)
 
-	flag.CommandLine.Parse(os.Args[2:])
+	err = flag.CommandLine.Parse(os.Args[2:])
 	if *bucket == "" || *key == "" {
 		fmt.Println("Please, specify valid parameters for command!")
 		os.Exit(1)
@@ -75,8 +75,8 @@ func getCommand() (string, error) {
 	defer func() {
 		rec := recover()
 		if rec != nil {
-			log.Println("Catch panic:", rec)
-			err = errors.New("Received panic while processing command")
+			fmt.Println("Please, provide valid command.")
+			os.Exit(1)
 		}
 	}()
 	arg := os.Args[1]
@@ -87,10 +87,12 @@ func getCommand() (string, error) {
 }
 
 func validCommand(command string) bool {
+	result := false
 	for _, comm := range commands {
 		if comm == command {
-			return true
+			result = true
+			break
 		}
 	}
-	return false
+	return result
 }
