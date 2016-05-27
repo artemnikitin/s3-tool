@@ -2,7 +2,6 @@ package command
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,13 +13,30 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
+var contentTypes = map[string]string{
+	"txt": "text/plain",
+	"json": "application/json",
+	"xml": "application/xml",
+	"pdf": "application/pdf",
+	"html": "text/html",
+	"htm": "text/html",
+	"css": "text/css",
+	"js": "application/javascript",
+	"bmp": "image/bmp",
+	"jpeg": "image/jpeg",
+	"png": "image/png",
+	"tiff": "image/tiff",
+	"gif": "image/gif",
+}
+
 // UploadFile will upload file to specific S3 bucket
-func UploadFile(session *session.Session, bucket, key string, file io.Reader) {
+func UploadFile(session *session.Session, bucket, key string, file *os.File) {
 	service := s3manager.NewUploader(session)
 	resp, err := service.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(bucket),
 		Key:    aws.String(key),
 		Body:   file,
+		ContentType: aws.String(getContentType(file)),
 	})
 	logger.Process(err, "Can't upload file")
 	fmt.Println("File was successfully uploaded! Location:", resp.Location)
@@ -37,8 +53,8 @@ func UploadDirectory(session *session.Session, bucket, key, dir string) {
 				go func() {
 					wg.Add(1)
 					UploadFile(session, bucket, key+path, file)
-					wg.Done()
 					file.Close()
+					wg.Done()
 				}()
 			}
 		}
@@ -82,4 +98,17 @@ func endWith(original, substring string) bool {
 	}
 	str := string(original[len(original)-len(substring):])
 	return str == substring
+}
+
+func getContentType(file *os.File) string {
+	result := "binary/octet-stream"
+	name := file.Name()
+	pos := strings.LastIndex(name, ".")
+	if pos != -1 {
+		v, ok := contentTypes[name[pos+1:]]
+		if ok {
+			result = v
+		}
+	}
+	return result
 }
