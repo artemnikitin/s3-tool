@@ -68,7 +68,3 @@ s3-tool command -parameter=blabla ...
 ```
 
 You can specify parameter ```-log=true``` for logging AWS requests and responses.
-
-##### TODO  
-1. Add more commands
-2. Alternative ways to authenticate in AWS
