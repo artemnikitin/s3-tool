@@ -15,6 +15,7 @@ Get it via
 ``` 
 go get github.com/artemnikitin/s3-tool 
 ``` 
+Or just get binary from release.
 
 ##### Commands
 Current list of supported commands:
