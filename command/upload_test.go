@@ -5,6 +5,30 @@ import (
 	"testing"
 )
 
+func TestEndWith(t *testing.T) {
+	cases := []struct {
+		src, sub string
+		res      bool
+	}{
+		{"dfd/", "/", true},
+		{"dfd/", "d/", true},
+		{"dfd/", "sdssd/", false},
+		{"dfd/", "f", false},
+		{"dfd", "/", false},
+		{"dfd/", "x/", false},
+		{"", "d/", false},
+		{"dfd/", "", true},
+		{"", "", true},
+	}
+
+	for _, v := range cases {
+		result := endWith(v.src, v.sub)
+		if result != v.res {
+			t.Errorf("For string: %s end with: %s, actual: %v, expected: %v", v.src, v.sub, result, v.res)
+		}
+	}
+}
+
 func TestGetFolderName(t *testing.T) {
 	cases := map[string]struct{ In, Out string }{
 		"without slash": {"/ddd/bbb", "bbb"},
