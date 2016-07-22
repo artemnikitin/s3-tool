@@ -27,6 +27,7 @@ func main() {
 	fmt.Println("Command:", comm)
 
 	err = flag.CommandLine.Parse(os.Args[2:])
+	logger.Process(err, "Can't parse arguments")
 	if *bucket == "" || *key == "" {
 		fmt.Println("Please, specify valid parameters for command!")
 		os.Exit(1)
