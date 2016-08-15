@@ -68,4 +68,4 @@ Run it like:
 s3-tool command -parameter=blabla ...
 ```
 
-You can specify parameter ```-log=true``` for logging AWS requests and responses.
+You can specify parameter ```-log``` for logging AWS requests and responses.
