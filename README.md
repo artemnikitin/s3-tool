@@ -1,5 +1,5 @@
 # s3-tool
-[![Go Report Card](https://goreportcard.com/badge/github.com/artemnikitin/s3-tool)](https://goreportcard.com/report/github.com/artemnikitin/s3-tool)  [![codebeat badge](https://codebeat.co/badges/3209df0c-51d0-4bf2-95de-950de4ef7003)](https://codebeat.co/projects/github-com-artemnikitin-s3-tool)   
+[![Go Report Card](https://goreportcard.com/badge/github.com/artemnikitin/s3-tool)](https://goreportcard.com/report/github.com/artemnikitin/s3-tool)  [![codebeat badge](https://codebeat.co/badges/3209df0c-51d0-4bf2-95de-950de4ef7003)](https://codebeat.co/projects/github-com-artemnikitin-s3-tool)   [![Build Status](https://travis-ci.org/artemnikitin/s3-tool.svg?branch=master)](https://travis-ci.org/artemnikitin/s3-tool)   
 CLI tool for AWS S3, written in Go. Work in progress...
 
 ##### AWS Credentials
