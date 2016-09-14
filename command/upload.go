@@ -82,7 +82,7 @@ func getFolderName(filepath string) string {
 		return ""
 	}
 	var result string
-	if endWith(filepath, "/") {
+	if strings.HasSuffix(filepath, "/") {
 		pos := strings.LastIndex(string(filepath[:len(filepath)-1]), "/")
 		result = string(filepath[pos+1 : len(filepath)-1])
 	} else {
@@ -90,14 +90,6 @@ func getFolderName(filepath string) string {
 		result = string(filepath[pos+1:])
 	}
 	return result
-}
-
-func endWith(original, substring string) bool {
-	if len(substring) > len(original) {
-		return false
-	}
-	str := string(original[len(original)-len(substring):])
-	return str == substring
 }
 
 func getContentType(file *os.File) string {
