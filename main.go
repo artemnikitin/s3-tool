@@ -14,14 +14,16 @@ import (
 )
 
 var (
-	bucket     = flag.String("bucket", "", "Name of bucket in S3")
-	key        = flag.String("key", "", "Key for object in bucket")
-	url        = flag.String("url", "", "Pre-signed URL for downloading")
-	pathToFile = flag.String("path", "", "Path to file")
-	commands   = []string{"presigned", "download", "upload"}
+	bucket         = flag.String("bucket", "", "Name of bucket in S3")
+	key            = flag.String("key", "", "Key for object in bucket")
+	url            = flag.String("url", "", "Pre-signed URL for downloading")
+	pathToFile     = flag.String("path", "", "Path to file")
+	keepRootFolder = flag.Bool("keepRootFolder", false, "Keep root folder in S3 bucket")
+	commands       = []string{"presigned", "download", "upload"}
 )
 
 func main() {
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	comm, err := getCommand()
 	logger.Process(err, "")
 	fmt.Println("Command:", comm)
@@ -64,7 +66,7 @@ func main() {
 		logger.Process(err, "Failed to get info about file")
 		switch mode := info.Mode(); {
 		case mode.IsDir():
-			command.UploadDirectory(session, *bucket, *key, *pathToFile)
+			command.UploadDirectory(session, *bucket, *key, *pathToFile, *keepRootFolder)
 		case mode.IsRegular():
 			command.UploadFile(session, *bucket, *key, file)
 		}

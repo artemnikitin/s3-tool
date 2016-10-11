@@ -43,13 +43,13 @@ func UploadFile(session *session.Session, bucket, key string, file *os.File) {
 }
 
 // UploadDirectory will upload directory and all it's content while keeping it structure
-func UploadDirectory(session *session.Session, bucket, key, dir string) {
+func UploadDirectory(session *session.Session, bucket, key, dir string, keep bool) {
 	var wg sync.WaitGroup
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
 			file, err := os.Open(path)
 			if err == nil {
-				path := getPathInsideFolder(path, getFolderName(dir))
+				path := getPathInsideFolder(path, getFolderName(dir), keep)
 				go func() {
 					wg.Add(1)
 					UploadFile(session, bucket, key+path, file)
@@ -65,14 +65,26 @@ func UploadDirectory(session *session.Session, bucket, key, dir string) {
 	fmt.Println("Directory was successfully uploaded!")
 }
 
-func getPathInsideFolder(path, folder string) string {
+func getPathInsideFolder(path, folder string, keep bool) string {
 	if path == "" || folder == "" {
 		return ""
 	}
-	pos := strings.Index(path, folder)
+	pos := -1
 	var result string
+	if keep {
+		pos = strings.Index(path, folder)
+	} else {
+		temp := strings.Index(path, folder) + len(folder)
+		if temp <= len(path) && temp > 0 {
+			pos = temp
+		}
+	}
 	if pos != -1 {
-		result = string(path[pos-1:])
+		if keep {
+			result = strings.Join([]string{"/", path[pos:]}, "")
+		} else {
+			result = path[pos:]
+		}
 	}
 	return result
 }
