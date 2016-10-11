@@ -49,10 +49,10 @@ func UploadDirectory(session *session.Session, bucket, key, dir string, keep boo
 		if !info.IsDir() {
 			file, err := os.Open(path)
 			if err == nil {
-				path := getPathInsideFolder(path, getFolderName(dir), keep)
+				t := getPathInsideFolder(path, getFolderName(dir), keep)
 				go func() {
 					wg.Add(1)
-					UploadFile(session, bucket, key+path, file)
+					UploadFile(session, bucket, key+t, file)
 					file.Close()
 					wg.Done()
 				}()
