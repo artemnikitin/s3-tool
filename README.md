@@ -51,7 +51,7 @@ Required parameters:
     - ```bucket``` specified bucket in S3
     - ```key``` specified key in S3  
     - ```path``` specified path to file/folder. If specified path is folder, then folder with all it's content will be uploaded.
-    - ```keepRootFolder``` specified option to keep root folder from ```path``` parameter. Disabled by default.    
+    - ```keepRootFolder``` (optional) specified option to keep root folder from ```path``` parameter. Disabled by default.    
 Example:   
 ```
 s3-tool upload -bucket=mybucket -key=my-file.png -path=/path/to/my-file.png
