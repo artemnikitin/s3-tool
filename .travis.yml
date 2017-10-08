@@ -1,9 +1,12 @@
 language: go
+
 go: 
- - 1.7.3
+ - 1.9.x
+ - 1.8.x
 
 script:
- - go test -race -v $(go list ./... | grep -v /vendor/)
+ - go test -race -v $(go list ./... | grep -v /vendor/) -coverprofile=coverage.out
+ - go tool cover -func=coverage.out
 
 after_success:
  - curl --request POST "https://goreportcard.com/checks" --data "repo=github.com/artemnikitin/s3-tool"
