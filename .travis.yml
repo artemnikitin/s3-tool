@@ -5,8 +5,7 @@ go:
  - 1.8.x
 
 script:
- - go test -race -v $(go list ./... | grep -v /vendor/) -coverprofile=coverage.out
- - go tool cover -func=coverage.out
+ - go test -race -v $(go list ./... | grep -v /vendor/)
 
 after_success:
  - curl --request POST "https://goreportcard.com/checks" --data "repo=github.com/artemnikitin/s3-tool"
